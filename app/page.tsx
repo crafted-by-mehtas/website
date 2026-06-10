@@ -24,8 +24,9 @@ function YarnDivider() {
 
 const CATEGORY_ICONS: Record<string, string> = {
   Flowers: "🌸", Bouquets: "💐", Keychains: "🔑",
+  "Mudwork Frames": "🌄", "Organizers": "🖇️",
   Bags: "👜", "Home Decor": "🏡", "Custom Orders": "✨",
-  Earrings: "💍", Accessories: "🎀", Toys: "🧸",
+  Jwellery: "💍", Accessories: "🎀", Gifts: "🧸",
 };
 
 const WA_ICON = (

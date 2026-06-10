@@ -96,7 +96,7 @@ export default function Footer() {
           gap: "12px",
         }}>
           <p style={{ fontSize: "0.8rem", color: "#6B6059", margin: 0 }}>
-            © {new Date().getFullYear()} {BUSINESS_CONFIG.name}. Made with 🧡 by hand.
+            © {new Date().getFullYear()} {BUSINESS_CONFIG.name}. Site Design and Developed by Aditya Mehta. All rights reserved.
           </p>
           <p style={{ fontSize: "0.8rem", color: "#6B6059", margin: 0 }}>
             All products are 100% handmade
