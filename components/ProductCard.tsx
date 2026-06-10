@@ -1,9 +1,11 @@
 "use client";
+
 import { useState } from "react";
 import Image from "next/image";
 import { Product } from "@/lib/types";
 import { buildWhatsAppUrl } from "@/lib/config";
 import ProductModal from "./ProductModal";
+import OrderForm from "./OrderForm"; // 1. Added missing import
 
 const WA_SVG = (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -12,6 +14,8 @@ const WA_SVG = (
 );
 
 export default function ProductCard({ product }: { product: Product }) {
+  // 2. Moved formOpen state inside the component scope
+  const [formOpen, setFormOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [imgError, setImgError] = useState(false);
 
@@ -41,32 +45,30 @@ export default function ProductCard({ product }: { product: Product }) {
           backgroundColor: "#FAF7F2", cursor: "pointer", overflow: "hidden",
         }}>
           {!imgError && product.imageUrl ? (
-        <Image
-          src={product.imageUrl}
-          alt={product.name}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          style={{
-            objectFit: "cover",
-            // 1. Move the base image position to the top-left
-            objectPosition: "12px 0px", 
-            // 2. Ensure the scale zoom anchors to the top-left corner
-            transformOrigin: "top left", 
-            transform: "scale(1.9)",
-            transition: "transform 0.4s ease",
-          }}
-          onError={() => setImgError(true)}
-          // 3. Keep the hover states aligned with your new scale limits if desired
-          onMouseOver={(e) => {
-            e.currentTarget.style.transformOrigin = "top left";
-            e.currentTarget.style.transform = "scale(1.7)";
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.transformOrigin = "top left";
-            e.currentTarget.style.transform = "scale(1.8)"; // Changed from 1.8 to match your base scale(1.8)
-          }}
-          unoptimized
-        />
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              style={{
+                objectFit: "cover",
+                objectPosition: "12px 0px", 
+                transformOrigin: "top left", 
+                transform: "scale(1.9)",
+                transition: "transform 0.4s ease",
+              }}
+              onError={() => setImgError(true)}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transformOrigin = "top left";
+                e.currentTarget.style.transform = "scale(1.7)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transformOrigin = "top left";
+                // 3. Updated from scale(1.8) to scale(1.9) to match base state
+                e.currentTarget.style.transform = "scale(1.9)"; 
+              }}
+              unoptimized
+            />
           ) : (
             <div style={{
               width: "100%", height: "100%", display: "flex",
@@ -145,7 +147,7 @@ export default function ProductCard({ product }: { product: Product }) {
                   </span>
                 )}
               </div>
-              <a href={waUrl} target="_blank" rel="noopener noreferrer"
+              <button onClick={() => setFormOpen(true)}
                 style={{
                   display: "flex", alignItems: "center", gap: "5px",
                   backgroundColor: "#25D366", color: "#fff",
@@ -155,7 +157,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 }}
                 onMouseOver={(e) => { e.currentTarget.style.backgroundColor = "#1db954"; e.currentTarget.style.transform = "scale(1.04)"; }}
                 onMouseOut={(e) => { e.currentTarget.style.backgroundColor = "#25D366"; e.currentTarget.style.transform = "scale(1)"; }}
-              >{WA_SVG} Order</a>
+              >{WA_SVG} Order</button>
             </div>
             {/* Price may vary note */}
             {product.orderFields && (
@@ -167,6 +169,7 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
       </div>
 
+      {formOpen && <OrderForm product={product} onClose={() => setFormOpen(false)} />}
       {modalOpen && <ProductModal product={product} onClose={() => setModalOpen(false)} />}
       <style>{`.product-card:hover .quick-view-hint { opacity: 1 !important; }`}</style>
     </>
