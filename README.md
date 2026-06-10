@@ -1,4 +1,4 @@
-# 🧶 Mayuri's Crochet — Website
+# 🧶 Mayuri's Artwork — Website
 
 A fully static, free-to-host crochet business website powered by **Next.js**, **Tailwind CSS**, and **Google Sheets** as a CMS.
 
