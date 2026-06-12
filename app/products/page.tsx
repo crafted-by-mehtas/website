@@ -2,7 +2,7 @@ import { fetchProducts } from "@/lib/products";
 import ProductGrid from "@/components/ProductGrid";
 
 export const metadata = {
-  title: "Products — Maahi's Crochet",
+  title: "Products — The Desi Craftory",
   description: "Browse our full collection of handmade crochet flowers, bouquets, keychains, bags and home decor.",
 };
 
