@@ -26,7 +26,8 @@ export function buildWhatsAppMessage(
   productName: string,
   discountedPrice: number,
   originalPrice?: number,
-  orderFields?: string
+  orderFields?: string,
+  imageUrl?: string
 ): string {
   const priceLine =
     originalPrice && originalPrice > discountedPrice
@@ -47,10 +48,12 @@ export function buildWhatsAppMessage(
     ? `\nPlease fill in the details below:\n${fieldLines}`
     : "";
 
+  const imageLine = imageUrl ? `\nProduct Photo: ${imageUrl}` : "";
+
   return (
     `Hi! I would like to order:\n\n` +
     `Product: ${productName} (${productId})\n` +
-    `${priceLine}\n` +
+    `${priceLine}${imageLine}\n` +
     `${customSection}\n` +
     `\nNote: Final price may vary based on specific requirements.`
   );
@@ -61,10 +64,11 @@ export function buildWhatsAppUrl(
   productName: string,
   discountedPrice: number,
   originalPrice?: number,
-  orderFields?: string
+  orderFields?: string,
+  imageUrl?: string
 ): string {
   return `https://wa.me/${BUSINESS_CONFIG.whatsappNumber}?text=${encodeURIComponent(
-    buildWhatsAppMessage(productId, productName, discountedPrice, originalPrice, orderFields)
+    buildWhatsAppMessage(productId, productName, discountedPrice, originalPrice, orderFields, imageUrl)
   )}`;
 }
 
@@ -95,9 +99,6 @@ export function driveImageUrl(raw: string): string {
 
   if (!fileId) return raw; // Return as-is if we can't parse it
 
-  // print the fileId for debugging
-  // console.log("Parsed Drive file ID:", fileId);
   // Use the thumbnail endpoint which serves images without auth
-  // return `https://drive.google.com/uc?export=view&id=${fileId}`;
   return `https://drive.google.com/thumbnail?id=${fileId}&sz=w800`;
 }

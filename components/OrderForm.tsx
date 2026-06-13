@@ -1,8 +1,7 @@
 "use client";
-
 import { useState } from "react";
 import { Product } from "@/lib/types";
-import { buildWhatsAppUrl, BUSINESS_CONFIG } from "@/lib/config"; // Moved import to the top
+import { BUSINESS_CONFIG } from "@/lib/config";
 
 export default function OrderForm({ product, onClose }: { product: Product; onClose: () => void }) {
   const [form, setForm] = useState({
@@ -27,13 +26,15 @@ export default function OrderForm({ product, onClose }: { product: Product; onCl
       ? `Price: ₹${product.discountedPrice} (base variant — was ₹${product.originalPrice})`
       : `Price: ₹${product.discountedPrice} (base variant)`;
 
+    const imageLine = product.imageUrl ? `\nProduct Photo: ${product.imageUrl}` : "";
+
     const msg =
       `Hi! I would like to order:\n\n` +
       `Product: ${product.name} (${product.id})\n` +
-      `${priceLine}\n` +
+      `${priceLine}\n${imageLine}\n` +
       `${customSection}\n\n` +
       `Full Name: ${form.name}\n` +
-      `Payment Method: ${form.payment}\n` +
+      `Payment Method: ${form.payment}\n\n` +
       `Shipping Address: ${form.address}\n` +
       `Special Request: ${form.special || "None"}\n\n` +
       `Note: Shipping cost will be borne by the customer. Final price may vary based on requirements.`;
@@ -41,7 +42,6 @@ export default function OrderForm({ product, onClose }: { product: Product; onCl
     return `https://wa.me/${BUSINESS_CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}`;
   }
 
-  // Updated validation logic to ensure custom generated fields are also filled out
   const customFieldsValid = fieldList.every(f => customFields[f]?.trim());
   const valid = !!(form.name.trim() && form.payment.trim() && form.address.trim() && customFieldsValid);
 
@@ -121,10 +121,9 @@ export default function OrderForm({ product, onClose }: { product: Product; onCl
           * Required fields. Final price may vary based on your requirements.
         </p>
 
-        {/* Fixed broken anchor tag wrapper below */}
         <a
           href={valid ? buildUrl() : undefined}
-          target="_blank" 
+          target="_blank"
           rel="noopener noreferrer"
           onClick={e => { if (!valid) e.preventDefault(); }}
           style={{

@@ -32,6 +32,7 @@ const CATEGORY_ICONS: Record<string, string> = {
   "Home Accessories": "🏠",
   "Keychains & Charms": "🔑",
   "Personal Accessories": "🎀",
+  "Custom Art": "✂️",
   "Tech Accessories": "📱",
   "Wall Clocks": "🕒",
   "Wall Decor & Lippan Art": "🖼️",
